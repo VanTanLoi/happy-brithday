@@ -52,63 +52,11 @@ body{
   }
 }
 
-/* ===== LOCK SCREEN ===== */
-#lockScreen{
-  position:absolute;
-  inset:0;
-  padding:40px 20px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  align-items:center;
-  color:white;
-}
-
-.birthday-image img{
-  width:70%;
-  max-width:260px;
-  aspect-ratio:3/4;
-  object-fit:cover;
-  border-radius:25px;
-  border:4px solid white;
-  box-shadow:0 20px 40px rgba(0,0,0,0.4);
-}
-
-#passwordDisplay{
-  font-size:26px;
-  letter-spacing:6px;
-  margin:20px 0;
-}
-
-.keypad{
-  width:100%;
-  max-width:320px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-
-.key{
-  background:white;
-  color:#ff4ecd;
-  font-size:22px;
-  padding:16px 0;
-  border-radius:20px;
-  cursor:pointer;
-  text-align:center;
-  box-shadow:0 8px 20px rgba(0,0,0,0.25);
-  transition:0.15s;
-}
-
-.key:active{
-  transform:scale(0.95);
-}
-
 /* ===== MAIN ===== */
 #mainContent{
   position:absolute;
   inset:0;
-  display:none;
+  display:flex;
   align-items:center;
   justify-content:center;
   flex-direction:column;
@@ -218,33 +166,6 @@ body{
 
 <div class="phone">
 
-<!-- LOCK -->
-<!-- <div id="lockScreen">
-  <div class="birthday-image">
-    <img src="anh234.jpg">
-  </div>
-
-  <div>
-    <h3>🔒 Nhập mật khẩu</h3>
-    <div id="passwordDisplay">________</div>
-
-    <div class="keypad">
-      <div class="key" onclick="press(1)">1</div>
-      <div class="key" onclick="press(2)">2</div>
-      <div class="key" onclick="press(3)">3</div>
-      <div class="key" onclick="press(4)">4</div>
-      <div class="key" onclick="press(5)">5</div>
-      <div class="key" onclick="press(6)">6</div>
-      <div class="key" onclick="press(7)">7</div>
-      <div class="key" onclick="press(8)">8</div>
-      <div class="key" onclick="press(9)">9</div>
-      <div></div>
-      <div class="key" onclick="press(0)">0</div>
-      <div class="key" onclick="clearPass()">⌫</div>
-    </div>
-  </div>
-</div> -->
-
 <!-- MAIN -->
 <div id="mainContent">
   <div id="countdown">23:59:50</div>
@@ -260,37 +181,8 @@ body{
 </div>
 
 <script>
-let input="";
-const correctPassword="14022005";
 
-function press(num){
-  if(input.length<8){
-    input+=num;
-    updateDisplay();
-  }
-  if(input.length===8) checkPassword();
-}
-
-function updateDisplay(){
-  document.getElementById("passwordDisplay").innerText=
-    input.replace(/./g,"●").padEnd(8,"_");
-}
-
-function clearPass(){
-  input=input.slice(0,-1);
-  updateDisplay();
-}
-
-function checkPassword(){
-  if(input===correctPassword){
-    document.getElementById("lockScreen").style.display="none";
-    document.getElementById("mainContent").style.display="flex";
-    startCountdown();
-  }else{
-    input="";
-    updateDisplay();
-  }
-}
+startCountdown();
 
 function startCountdown(){
   let s=50,m=59,h=23;
@@ -354,6 +246,7 @@ function closePopup(){
   document.getElementById("overlay").classList.remove("active");
   document.getElementById("popup").classList.remove("active");
 }
+
 </script>
 
 </body>
