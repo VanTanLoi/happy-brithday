@@ -15,37 +15,48 @@
   -webkit-tap-highlight-color:transparent;
 }
 
+html,body{
+  height:100%;
+  width:100%;
+}
+
 body{
   background:#111;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
 }
 
-/* ===== KHUNG 9:16 ===== */
-
+/* ===== APP CONTAINER ===== */
 .phone{
   width:100%;
-  max-width:390px;  /* iPhone 11 Pro width */
-  aspect-ratio:9/16;
+  height:100%;
+  max-width:480px;
   background:linear-gradient(180deg,#ff9ad5,#c084fc);
-  border-radius:35px;
-  overflow:hidden;
   position:relative;
+  overflow:hidden;
   display:flex;
   flex-direction:column;
-  align-items:center;
-  justify-content:center;
+}
+
+/* Desktop view */
+@media (min-width:768px){
+  body{
+    padding:40px;
+  }
+  .phone{
+    width:400px;
+    height:800px;
+    border-radius:30px;
+    box-shadow:0 40px 80px rgba(0,0,0,0.5);
+  }
 }
 
 /* ===== LOCK SCREEN ===== */
-
 #lockScreen{
   position:absolute;
-  width:100%;
-  height:100%;
-  padding:25px;
+  inset:0;
+  padding:40px 20px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
@@ -54,8 +65,9 @@ body{
 }
 
 .birthday-image img{
-  width:220px;
-  height:300px;
+  width:70%;
+  max-width:260px;
+  aspect-ratio:3/4;
   object-fit:cover;
   border-radius:25px;
   border:4px solid white;
@@ -65,35 +77,37 @@ body{
 #passwordDisplay{
   font-size:26px;
   letter-spacing:6px;
-  margin:15px 0;
+  margin:20px 0;
 }
 
 .keypad{
   width:100%;
+  max-width:320px;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:12px;
+  gap:14px;
 }
 
 .key{
   background:white;
   color:#ff4ecd;
   font-size:22px;
-  padding:15px 0;
+  padding:16px 0;
   border-radius:20px;
   cursor:pointer;
   text-align:center;
-  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+  box-shadow:0 8px 20px rgba(0,0,0,0.25);
+  transition:0.15s;
 }
 
-.key:active{transform:scale(0.9);}
+.key:active{
+  transform:scale(0.95);
+}
 
 /* ===== MAIN ===== */
-
 #mainContent{
   position:absolute;
-  width:100%;
-  height:100%;
+  inset:0;
   display:none;
   align-items:center;
   justify-content:center;
@@ -104,21 +118,21 @@ body{
   font-size:48px;
   font-weight:800;
   color:white;
-  text-shadow:0 0 15px #ff66cc;
+  text-shadow:0 0 20px #ff66cc;
 }
 
 /* TITLE */
-
 .title{
   position:absolute;
   font-size:28px;
   text-align:center;
-  top:35%;
+  top:40%;
   background:linear-gradient(45deg,#ff4ecd,#ff8c00,#00e0ff,#ff4ecd);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   animation:pop 0.7s ease forwards;
   transform:scale(0);
+  z-index:2;
 }
 
 @keyframes pop{
@@ -128,46 +142,75 @@ body{
 }
 
 /* CONFETTI */
-
 .dot{
   position:absolute;
-  width:18px;
-  height:18px;
+  width:16px;
+  height:16px;
   border-radius:50%;
   cursor:pointer;
-  animation:float 3s infinite alternate;
+  animation:float 2.5s ease-in-out infinite alternate;
+  z-index:1;
 }
 
 @keyframes float{
-  from{transform:translateY(-10px);}
-  to{transform:translateY(15px);}
+  from{transform:translateY(-8px);}
+  to{transform:translateY(18px);}
 }
 
-/* POPUP */
-
-.popup{
-  position:absolute;
-  width:85%;
-  background:white;
-  padding:25px;
-  border-radius:20px;
-  text-align:center;
-  transform:scale(0);
+/* ===== OVERLAY ===== */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.65);
+  backdrop-filter:blur(6px);
+  opacity:0;
+  pointer-events:none;
   transition:0.3s;
-  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+  z-index:9998;
 }
 
-.popup.active{transform:scale(1);}
+.overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* ===== POPUP ===== */
+.popup{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0.8);
+  width:90%;
+  max-width:360px;
+  background:white;
+  padding:30px;
+  border-radius:25px;
+  text-align:center;
+  box-shadow:0 25px 60px rgba(0,0,0,0.35);
+  opacity:0;
+  transition:0.3s;
+  z-index:9999;
+}
+
+.popup.active{
+  transform:translate(-50%,-50%) scale(1);
+  opacity:1;
+}
+
+.popup #message{
+  font-size:15px;
+  line-height:1.6;
+  color:#444;
+}
 
 .close{
   position:absolute;
-  top:10px;
-  right:15px;
+  top:12px;
+  right:16px;
   cursor:pointer;
+  font-size:18px;
   color:#ff4ecd;
-  font-weight:bold;
 }
-
 </style>
 </head>
 
@@ -205,16 +248,18 @@ body{
 <!-- MAIN -->
 <div id="mainContent">
   <div id="countdown">23:59:50</div>
-  <div class="popup" id="popup">
-    <div class="close" onclick="closePopup()">✖</div>
-    <div id="message"></div>
-  </div>
 </div>
 
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="popup" id="popup">
+  <div class="close" onclick="closePopup()">✖</div>
+  <div id="message"></div>
 </div>
 
 <script>
-
 let input="";
 const correctPassword="14022005";
 
@@ -250,7 +295,6 @@ function checkPassword(){
 function startCountdown(){
   let s=50,m=59,h=23;
   const cd=document.getElementById("countdown");
-
   const timer=setInterval(()=>{
     s++;
     if(s==60){s=0;m++;}
@@ -259,7 +303,6 @@ function startCountdown(){
       clearInterval(timer);
       startBirthday();
     }
-
     cd.innerText=
       String(h).padStart(2,"0")+":"+
       String(m).padStart(2,"0")+":"+
@@ -268,6 +311,7 @@ function startCountdown(){
 }
 
 let clickCount=0;
+
 const messages=[
 "Chúc mừng sinh nhật 21 tuổi của vợ anh – cô gái sinh ra đúng ngày Valentine như một món quà dành riêng cho yêu thương. Điều anh trân trọng nhất không phải là những lời ngọt ngào, mà là cách em luôn dịu dàng, luôn nghĩ cho gia đình và luôn cố gắng vì hai đứa mình. 21 tuổi của em hãy thật hạnh phúc, thật bình an và luôn cảm nhận được rằng bên cạnh em có một người chồng yêu em bằng tất cả sự chân thành và tự hào vì được gọi em là “vợ”.",
 "Tuổi 21 là cột mốc đẹp – không còn quá nhỏ bé nhưng cũng đủ trẻ để mơ những giấc mơ lớn. Anh chúc em bước sang tuổi mới với nhiều bản lĩnh hơn, tự tin hơn và dám theo đuổi những điều em mong muốn. Dù cuộc sống phía trước có thử thách gì, anh tin vào sự mạnh mẽ trong em. Anh không chỉ yêu em vì em là vợ anh, mà còn vì em là một cô gái biết cố gắng, biết hy sinh và luôn hướng về tương lai.",
@@ -286,7 +330,8 @@ function startBirthday(){
     const dot=document.createElement("div");
     dot.className="dot";
     dot.style.background=
-      ["#ff4ecd","#ffd93d","#00e0ff","#7bff00"][Math.floor(Math.random()*4)];
+      ["#ff4ecd","#ffd93d","#00e0ff","#7bff00"]
+      [Math.floor(Math.random()*4)];
     dot.style.left=Math.random()*100+"%";
     dot.style.top=Math.random()*100+"%";
     dot.onclick=function(){
@@ -301,13 +346,14 @@ function startBirthday(){
 
 function showMessage(text){
   document.getElementById("message").innerHTML=text;
+  document.getElementById("overlay").classList.add("active");
   document.getElementById("popup").classList.add("active");
 }
 
 function closePopup(){
+  document.getElementById("overlay").classList.remove("active");
   document.getElementById("popup").classList.remove("active");
 }
-
 </script>
 
 </body>
