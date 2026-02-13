@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Secret</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Baloo 2',cursive;}
+
+body{
+  height:100vh;
+  overflow:hidden;
+  background:linear-gradient(135deg,#ff9ad5,#cbb4d4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* ===== LOCK SCREEN ===== */
+
+#lockScreen{
+  width:100%;
+}
+
+.lock-container{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:40px;
+}
+
+.birthday-image img{
+  width:220px;
+  height:300px;
+  object-fit:cover;
+  border-radius:25px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.4);
+  border:4px solid white;
+}
+
+.lock-box{
+  text-align:center;
+  color:white;
+}
+
+#passwordDisplay{
+  font-size:40px;
+  letter-spacing:10px;
+  margin:20px 0;
+}
+
+.keypad{
+  display:grid;
+  grid-template-columns:repeat(3,80px);
+  gap:15px;
+  justify-content:center;
+}
+
+.key{
+  background:white;
+  color:#ff4ecd;
+  font-size:24px;
+  padding:20px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:0.2s;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.key:active{transform:scale(0.9);}
+
+.error{animation:shake 0.3s;}
+
+@keyframes shake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-5px);}
+  50%{transform:translateX(5px);}
+  75%{transform:translateX(-5px);}
+  100%{transform:translateX(0);}
+}
+
+/* ===== MAIN CONTENT ===== */
+
+#mainContent{
+  display:none;
+  position:relative;
+  height:100vh;
+  width:100%;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  background:linear-gradient(135deg,#e9c6df,#cbb4d4);
+}
+
+#countdown{
+  font-size:80px;
+  font-weight:800;
+  color:white;
+  text-shadow:0 0 20px #ff66cc;
+}
+
+/* Title */
+
+.title{
+  position:absolute;
+  font-size:7vw;
+  font-weight:800;
+  background:linear-gradient(45deg,#ff4ecd,#ff8c00,#00e0ff,#ff4ecd);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:pop 1s ease forwards;
+  transform:scale(0);
+  text-align:center;
+}
+
+@keyframes pop{
+  0%{transform:scale(0);}
+  60%{transform:scale(1.2);}
+  100%{transform:scale(1);}
+}
+
+/* Confetti */
+
+.dot{
+  position:absolute;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  cursor:pointer;
+  animation:float 4s infinite alternate;
+  box-shadow:0 0 15px white;
+}
+
+@keyframes float{
+  from{transform:translateY(-10px);}
+  to{transform:translateY(15px);}
+}
+
+/* Popup */
+
+.popup{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  background:white;
+  padding:40px;
+  border-radius:25px;
+  text-align:center;
+  font-size:22px;
+  width:80%;
+  max-width:500px;
+  box-shadow:0 0 40px rgba(0,0,0,0.3);
+  z-index:999;
+  transition:0.4s;
+}
+
+.popup.active{
+  transform:translate(-50%,-50%) scale(1);
+}
+
+.close{
+  position:absolute;
+  top:10px;
+  right:15px;
+  font-size:22px;
+  cursor:pointer;
+  color:#ff4ecd;
+  font-weight:bold;
+}
+
+.overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  z-index:998;
+}
+
+.overlay.active{display:block;}
+
+@media (max-width:768px){
+  .lock-container{
+    flex-direction:column;
+  }
+  .birthday-image img{
+    width:180px;
+    height:240px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK SCREEN -->
+<div id="lockScreen">
+  <div class="lock-container">
+
+    <div class="birthday-image">
+      <img src="anh234.jpg" alt="Birthday">
+    </div>
+
+    <div class="lock-box">
+      <h2>🔒 Nhập mật khẩu</h2>
+      <div id="passwordDisplay">________</div>
+
+      <div class="keypad">
+        <div class="key" onclick="press(1)">1</div>
+        <div class="key" onclick="press(2)">2</div>
+        <div class="key" onclick="press(3)">3</div>
+        <div class="key" onclick="press(4)">4</div>
+        <div class="key" onclick="press(5)">5</div>
+        <div class="key" onclick="press(6)">6</div>
+        <div class="key" onclick="press(7)">7</div>
+        <div class="key" onclick="press(8)">8</div>
+        <div class="key" onclick="press(9)">9</div>
+        <div></div>
+        <div class="key" onclick="press(0)">0</div>
+        <div class="key" onclick="clearPass()">⌫</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent">
+  <div id="countdown">23:59:50</div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="popup" id="popup">
+  <div class="close" onclick="closePopup()">❌</div>
+  <div id="message"></div>
+</div>
+
+<script>
+
+/* PASSWORD */
+
+let input="";
+const correctPassword="14022005";
+
+function press(num){
+  if(input.length<8){
+    input+=num;
+    updateDisplay();
+  }
+  if(input.length===8){
+    checkPassword();
+  }
+}
+
+function updateDisplay(){
+  let masked=input.split("").map(()=> "●").join("");
+  document.getElementById("passwordDisplay").innerText=
+    masked.padEnd(8,"_");
+}
+
+function clearPass(){
+  input=input.slice(0,-1);
+  updateDisplay();
+}
+
+function checkPassword(){
+  if(input===correctPassword){
+    unlock();
+  }else{
+    document.getElementById("lockScreen").classList.add("error");
+    setTimeout(()=>{
+      document.getElementById("lockScreen").classList.remove("error");
+      input="";
+      updateDisplay();
+    },500);
+  }
+}
+
+function unlock(){
+  document.getElementById("lockScreen").style.display="none";
+  document.getElementById("mainContent").style.display="flex";
+  startCountdown();
+}
+
+/* COUNTDOWN */
+
+function startCountdown(){
+  let seconds=50, minutes=59, hours=23;
+  const countdown=document.getElementById("countdown");
+
+  const timer=setInterval(()=>{
+    seconds++;
+    if(seconds==60){seconds=0;minutes++;}
+    if(minutes==60){minutes=0;hours++;}
+    if(hours==24){
+      clearInterval(timer);
+      startBirthday();
+    }
+
+    countdown.innerText=
+      String(hours).padStart(2,"0")+":"+
+      String(minutes).padStart(2,"0")+":"+
+      String(seconds).padStart(2,"0");
+
+  },1000);
+}
+
+/* BIRTHDAY */
+
+let clickCount=0;
+const colors=["#ff4ecd","#00e0ff","#ffd93d","#7bff00","#ff5722","#9c27b0"];
+const messages=[
+"🎀 Chúc em bé luôn xinh đẹp và được yêu thương thật nhiều!",
+"🎂 Tuổi mới mong mọi điều tốt đẹp nhất sẽ đến với em!",
+"🌟 Chúc em mãi rực rỡ và hạnh phúc mỗi ngày!"
+];
+
+function startBirthday(){
+  document.getElementById("countdown").style.display="none";
+
+  const title=document.createElement("h1");
+  title.classList.add("title");
+  title.innerHTML="🎉 HAPPY BIRTHDAY EM BÉ 🎂";
+  document.getElementById("mainContent").appendChild(title);
+
+  for(let i=0;i<25;i++){
+    const dot=document.createElement("div");
+    dot.classList.add("dot");
+    dot.style.background=colors[Math.floor(Math.random()*colors.length)];
+    dot.style.left=Math.random()*100+"vw";
+    dot.style.top=Math.random()*100+"vh";
+
+    dot.onclick=function(){
+      if(clickCount<3){
+        showMessage(clickCount);
+        clickCount++;
+      }
+    };
+
+    document.getElementById("mainContent").appendChild(dot);
+  }
+}
+
+function showMessage(index){
+  document.getElementById("message").innerHTML=messages[index];
+  document.getElementById("popup").classList.add("active");
+  document.getElementById("overlay").classList.add("active");
+}
+
+function closePopup(){
+  document.getElementById("popup").classList.remove("active");
+  document.getElementById("overlay").classList.remove("active");
+}
+
+</script>
+
+</body>
+</html>
