@@ -2,8 +2,8 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Birthday Secret</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
@@ -16,22 +16,36 @@
 }
 
 body{
-  height:100vh;
-  width:100vw;
-  overflow:hidden;
-  background:linear-gradient(180deg,#ff9ad5,#c084fc);
+  background:#111;
   display:flex;
   justify-content:center;
   align-items:center;
+  height:100vh;
+}
+
+/* ===== KHUNG 9:16 ===== */
+
+.phone{
+  width:100%;
+  max-width:390px;  /* iPhone 11 Pro width */
+  aspect-ratio:9/16;
+  background:linear-gradient(180deg,#ff9ad5,#c084fc);
+  border-radius:35px;
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
 
 /* ===== LOCK SCREEN ===== */
 
 #lockScreen{
+  position:absolute;
   width:100%;
-  max-width:430px;   /* Giới hạn ngang giống iPhone */
-  height:100vh;
-  padding:30px 20px;
+  height:100%;
+  padding:25px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
@@ -40,95 +54,70 @@ body{
 }
 
 .birthday-image img{
-  width:100%;
-  max-width:260px;
-  height:340px;
+  width:220px;
+  height:300px;
   object-fit:cover;
-  border-radius:30px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.4);
+  border-radius:25px;
   border:4px solid white;
-}
-
-.lock-box{
-  width:100%;
-  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
 }
 
 #passwordDisplay{
-  font-size:32px;
-  letter-spacing:8px;
-  margin:20px 0;
+  font-size:26px;
+  letter-spacing:6px;
+  margin:15px 0;
 }
 
 .keypad{
   width:100%;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:15px;
+  gap:12px;
 }
 
 .key{
   background:white;
   color:#ff4ecd;
-  font-size:26px;
-  padding:18px 0;
-  border-radius:25px;
+  font-size:22px;
+  padding:15px 0;
+  border-radius:20px;
   cursor:pointer;
-  transition:0.15s;
-  box-shadow:0 5px 20px rgba(0,0,0,0.2);
+  text-align:center;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
 
-.key:active{
-  transform:scale(0.9);
-}
+.key:active{transform:scale(0.9);}
 
-.error{
-  animation:shake 0.3s;
-}
-
-@keyframes shake{
-  0%{transform:translateX(0);}
-  25%{transform:translateX(-6px);}
-  50%{transform:translateX(6px);}
-  75%{transform:translateX(-6px);}
-  100%{transform:translateX(0);}
-}
-
-/* ===== MAIN CONTENT ===== */
+/* ===== MAIN ===== */
 
 #mainContent{
-  display:none;
+  position:absolute;
   width:100%;
-  max-width:430px;
-  height:100vh;
-  padding:30px;
-  position:relative;
-  flex-direction:column;
-  justify-content:center;
+  height:100%;
+  display:none;
   align-items:center;
-  background:linear-gradient(180deg,#ff9ad5,#c084fc);
+  justify-content:center;
+  flex-direction:column;
 }
 
 #countdown{
-  font-size:56px;
+  font-size:48px;
   font-weight:800;
   color:white;
-  text-shadow:0 0 20px #ff66cc;
-  letter-spacing:2px;
+  text-shadow:0 0 15px #ff66cc;
 }
 
-/* Title */
+/* TITLE */
 
 .title{
   position:absolute;
-  top:30%;
-  font-size:8vw;
-  font-weight:800;
+  font-size:28px;
   text-align:center;
+  top:35%;
   background:linear-gradient(45deg,#ff4ecd,#ff8c00,#00e0ff,#ff4ecd);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
-  animation:pop 0.8s ease forwards;
+  animation:pop 0.7s ease forwards;
   transform:scale(0);
 }
 
@@ -138,16 +127,15 @@ body{
   100%{transform:scale(1);}
 }
 
-/* Confetti */
+/* CONFETTI */
 
 .dot{
   position:absolute;
-  width:20px;
-  height:20px;
+  width:18px;
+  height:18px;
   border-radius:50%;
   cursor:pointer;
   animation:float 3s infinite alternate;
-  box-shadow:0 0 15px white;
 }
 
 @keyframes float{
@@ -155,64 +143,46 @@ body{
   to{transform:translateY(15px);}
 }
 
-/* Popup */
+/* POPUP */
 
 .popup{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) scale(0);
-  background:white;
-  padding:35px 25px;
-  border-radius:25px;
-  text-align:center;
-  font-size:20px;
+  position:absolute;
   width:85%;
-  max-width:350px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.3);
-  z-index:999;
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+  transform:scale(0);
   transition:0.3s;
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
 }
 
-.popup.active{
-  transform:translate(-50%,-50%) scale(1);
-}
+.popup.active{transform:scale(1);}
 
 .close{
   position:absolute;
   top:10px;
   right:15px;
-  font-size:20px;
   cursor:pointer;
   color:#ff4ecd;
   font-weight:bold;
 }
-
-.overlay{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.4);
-  display:none;
-  z-index:998;
-}
-
-.overlay.active{display:block;}
 
 </style>
 </head>
 
 <body>
 
-<!-- LOCK SCREEN -->
-<div id="lockScreen">
+<div class="phone">
 
+<!-- LOCK -->
+<div id="lockScreen">
   <div class="birthday-image">
-    <img src="anh234.jpg" alt="Birthday">
+    <img src="anh234.jpg">
   </div>
 
-  <div class="lock-box">
-    <h2>🔒 Nhập mật khẩu</h2>
+  <div>
+    <h3>🔒 Nhập mật khẩu</h3>
     <div id="passwordDisplay">________</div>
 
     <div class="keypad">
@@ -230,18 +200,17 @@ body{
       <div class="key" onclick="clearPass()">⌫</div>
     </div>
   </div>
-
 </div>
 
 <!-- MAIN -->
 <div id="mainContent">
   <div id="countdown">23:59:50</div>
+  <div class="popup" id="popup">
+    <div class="close" onclick="closePopup()">✖</div>
+    <div id="message"></div>
+  </div>
 </div>
 
-<div class="overlay" id="overlay"></div>
-<div class="popup" id="popup">
-  <div class="close" onclick="closePopup()">✖</div>
-  <div id="message"></div>
 </div>
 
 <script>
@@ -254,15 +223,12 @@ function press(num){
     input+=num;
     updateDisplay();
   }
-  if(input.length===8){
-    checkPassword();
-  }
+  if(input.length===8) checkPassword();
 }
 
 function updateDisplay(){
-  let masked=input.split("").map(()=> "●").join("");
   document.getElementById("passwordDisplay").innerText=
-    masked.padEnd(8,"_");
+    input.replace(/./g,"●").padEnd(8,"_");
 }
 
 function clearPass(){
@@ -272,87 +238,74 @@ function clearPass(){
 
 function checkPassword(){
   if(input===correctPassword){
-    unlock();
+    document.getElementById("lockScreen").style.display="none";
+    document.getElementById("mainContent").style.display="flex";
+    startCountdown();
   }else{
-    document.getElementById("lockScreen").classList.add("error");
-    setTimeout(()=>{
-      document.getElementById("lockScreen").classList.remove("error");
-      input="";
-      updateDisplay();
-    },500);
+    input="";
+    updateDisplay();
   }
 }
 
-function unlock(){
-  document.getElementById("lockScreen").style.display="none";
-  document.getElementById("mainContent").style.display="flex";
-  startCountdown();
-}
-
 function startCountdown(){
-  let seconds=50, minutes=59, hours=23;
-  const countdown=document.getElementById("countdown");
+  let s=50,m=59,h=23;
+  const cd=document.getElementById("countdown");
 
   const timer=setInterval(()=>{
-    seconds++;
-    if(seconds==60){seconds=0;minutes++;}
-    if(minutes==60){minutes=0;hours++;}
-    if(hours==24){
+    s++;
+    if(s==60){s=0;m++;}
+    if(m==60){m=0;h++;}
+    if(h==24){
       clearInterval(timer);
       startBirthday();
     }
 
-    countdown.innerText=
-      String(hours).padStart(2,"0")+":"+
-      String(minutes).padStart(2,"0")+":"+
-      String(seconds).padStart(2,"0");
-
+    cd.innerText=
+      String(h).padStart(2,"0")+":"+
+      String(m).padStart(2,"0")+":"+
+      String(s).padStart(2,"0");
   },1000);
 }
 
 let clickCount=0;
-const colors=["#ff4ecd","#00e0ff","#ffd93d","#7bff00","#ff5722","#9c27b0"];
 const messages=[
-"🎀 Chúc em bé luôn xinh đẹp và được yêu thương thật nhiều!",
-"🎂 Tuổi mới mong mọi điều tốt đẹp nhất sẽ đến với em!",
-"🌟 Chúc em mãi rực rỡ và hạnh phúc mỗi ngày!"
+"Chúc mừng sinh nhật 21 tuổi của vợ anh – cô gái sinh ra đúng ngày Valentine như một món quà dành riêng cho yêu thương. Điều anh trân trọng nhất không phải là những lời ngọt ngào, mà là cách em luôn dịu dàng, luôn nghĩ cho gia đình và luôn cố gắng vì hai đứa mình. 21 tuổi của em hãy thật hạnh phúc, thật bình an và luôn cảm nhận được rằng bên cạnh em có một người chồng yêu em bằng tất cả sự chân thành và tự hào vì được gọi em là “vợ”.",
+"Tuổi 21 là cột mốc đẹp – không còn quá nhỏ bé nhưng cũng đủ trẻ để mơ những giấc mơ lớn. Anh chúc em bước sang tuổi mới với nhiều bản lĩnh hơn, tự tin hơn và dám theo đuổi những điều em mong muốn. Dù cuộc sống phía trước có thử thách gì, anh tin vào sự mạnh mẽ trong em. Anh không chỉ yêu em vì em là vợ anh, mà còn vì em là một cô gái biết cố gắng, biết hy sinh và luôn hướng về tương lai.",
+"Sinh nhật này đặc biệt hơn vì chúng ta đang cùng nhau chuẩn bị cho một hành trình mới sang Đức. Anh chúc em 21 tuổi sẽ là năm khởi đầu cho những bước đi vững chắc nơi đất nước xa lạ – nơi hai đứa sẽ cùng học, cùng làm, cùng xây dựng cuộc sống bằng chính sự nỗ lực của mình. Dù mùa đông có lạnh hay con đường có khó, anh vẫn muốn mỗi ngày ở Đức đều là một ngày chúng ta nắm tay nhau và nhớ rằng: mình đã dũng cảm bắt đầu từ tuổi 21 như thế nào."
 ];
 
 function startBirthday(){
   document.getElementById("countdown").style.display="none";
 
-  const title=document.createElement("h1");
-  title.classList.add("title");
+  const title=document.createElement("div");
+  title.className="title";
   title.innerHTML="🎉 HAPPY BIRTHDAY EM BÉ 🎂";
   document.getElementById("mainContent").appendChild(title);
 
-  for(let i=0;i<25;i++){
+  for(let i=0;i<20;i++){
     const dot=document.createElement("div");
-    dot.classList.add("dot");
-    dot.style.background=colors[Math.floor(Math.random()*colors.length)];
-    dot.style.left=Math.random()*100+"vw";
-    dot.style.top=Math.random()*100+"vh";
-
+    dot.className="dot";
+    dot.style.background=
+      ["#ff4ecd","#ffd93d","#00e0ff","#7bff00"][Math.floor(Math.random()*4)];
+    dot.style.left=Math.random()*100+"%";
+    dot.style.top=Math.random()*100+"%";
     dot.onclick=function(){
       if(clickCount<3){
-        showMessage(clickCount);
+        showMessage(messages[clickCount]);
         clickCount++;
       }
     };
-
     document.getElementById("mainContent").appendChild(dot);
   }
 }
 
-function showMessage(index){
-  document.getElementById("message").innerHTML=messages[index];
+function showMessage(text){
+  document.getElementById("message").innerHTML=text;
   document.getElementById("popup").classList.add("active");
-  document.getElementById("overlay").classList.add("active");
 }
 
 function closePopup(){
   document.getElementById("popup").classList.remove("active");
-  document.getElementById("overlay").classList.remove("active");
 }
 
 </script>
