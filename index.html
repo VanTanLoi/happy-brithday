@@ -2,17 +2,24 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Birthday Secret</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Baloo 2',cursive;}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Baloo 2',cursive;
+  -webkit-tap-highlight-color:transparent;
+}
 
 body{
   height:100vh;
+  width:100vw;
   overflow:hidden;
-  background:linear-gradient(135deg,#ff9ad5,#cbb4d4);
+  background:linear-gradient(180deg,#ff9ad5,#c084fc);
   display:flex;
   justify-content:center;
   align-items:center;
@@ -22,62 +29,68 @@ body{
 
 #lockScreen{
   width:100%;
-}
-
-.lock-container{
+  max-width:430px;   /* Giới hạn ngang giống iPhone */
+  height:100vh;
+  padding:30px 20px;
   display:flex;
+  flex-direction:column;
+  justify-content:space-between;
   align-items:center;
-  justify-content:center;
-  gap:40px;
+  color:white;
 }
 
 .birthday-image img{
-  width:220px;
-  height:300px;
+  width:100%;
+  max-width:260px;
+  height:340px;
   object-fit:cover;
-  border-radius:25px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.4);
+  border-radius:30px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
   border:4px solid white;
 }
 
 .lock-box{
+  width:100%;
   text-align:center;
-  color:white;
 }
 
 #passwordDisplay{
-  font-size:40px;
-  letter-spacing:10px;
+  font-size:32px;
+  letter-spacing:8px;
   margin:20px 0;
 }
 
 .keypad{
+  width:100%;
   display:grid;
-  grid-template-columns:repeat(3,80px);
+  grid-template-columns:repeat(3,1fr);
   gap:15px;
-  justify-content:center;
 }
 
 .key{
   background:white;
   color:#ff4ecd;
-  font-size:24px;
-  padding:20px;
-  border-radius:20px;
+  font-size:26px;
+  padding:18px 0;
+  border-radius:25px;
   cursor:pointer;
-  transition:0.2s;
-  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+  transition:0.15s;
+  box-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
 
-.key:active{transform:scale(0.9);}
+.key:active{
+  transform:scale(0.9);
+}
 
-.error{animation:shake 0.3s;}
+.error{
+  animation:shake 0.3s;
+}
 
 @keyframes shake{
   0%{transform:translateX(0);}
-  25%{transform:translateX(-5px);}
-  50%{transform:translateX(5px);}
-  75%{transform:translateX(-5px);}
+  25%{transform:translateX(-6px);}
+  50%{transform:translateX(6px);}
+  75%{transform:translateX(-6px);}
   100%{transform:translateX(0);}
 }
 
@@ -85,34 +98,38 @@ body{
 
 #mainContent{
   display:none;
-  position:relative;
-  height:100vh;
   width:100%;
+  max-width:430px;
+  height:100vh;
+  padding:30px;
+  position:relative;
+  flex-direction:column;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
-  background:linear-gradient(135deg,#e9c6df,#cbb4d4);
+  background:linear-gradient(180deg,#ff9ad5,#c084fc);
 }
 
 #countdown{
-  font-size:80px;
+  font-size:56px;
   font-weight:800;
   color:white;
   text-shadow:0 0 20px #ff66cc;
+  letter-spacing:2px;
 }
 
 /* Title */
 
 .title{
   position:absolute;
-  font-size:7vw;
+  top:30%;
+  font-size:8vw;
   font-weight:800;
+  text-align:center;
   background:linear-gradient(45deg,#ff4ecd,#ff8c00,#00e0ff,#ff4ecd);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
-  animation:pop 1s ease forwards;
+  animation:pop 0.8s ease forwards;
   transform:scale(0);
-  text-align:center;
 }
 
 @keyframes pop{
@@ -125,11 +142,11 @@ body{
 
 .dot{
   position:absolute;
-  width:18px;
-  height:18px;
+  width:20px;
+  height:20px;
   border-radius:50%;
   cursor:pointer;
-  animation:float 4s infinite alternate;
+  animation:float 3s infinite alternate;
   box-shadow:0 0 15px white;
 }
 
@@ -146,15 +163,15 @@ body{
   left:50%;
   transform:translate(-50%,-50%) scale(0);
   background:white;
-  padding:40px;
+  padding:35px 25px;
   border-radius:25px;
   text-align:center;
-  font-size:22px;
-  width:80%;
-  max-width:500px;
-  box-shadow:0 0 40px rgba(0,0,0,0.3);
+  font-size:20px;
+  width:85%;
+  max-width:350px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
   z-index:999;
-  transition:0.4s;
+  transition:0.3s;
 }
 
 .popup.active{
@@ -165,7 +182,7 @@ body{
   position:absolute;
   top:10px;
   right:15px;
-  font-size:22px;
+  font-size:20px;
   cursor:pointer;
   color:#ff4ecd;
   font-weight:bold;
@@ -182,15 +199,6 @@ body{
 
 .overlay.active{display:block;}
 
-@media (max-width:768px){
-  .lock-container{
-    flex-direction:column;
-  }
-  .birthday-image img{
-    width:180px;
-    height:240px;
-  }
-}
 </style>
 </head>
 
@@ -198,49 +206,45 @@ body{
 
 <!-- LOCK SCREEN -->
 <div id="lockScreen">
-  <div class="lock-container">
 
-    <div class="birthday-image">
-      <img src="anh234.jpg" alt="Birthday">
-    </div>
-
-    <div class="lock-box">
-      <h2>🔒 Nhập mật khẩu</h2>
-      <div id="passwordDisplay">________</div>
-
-      <div class="keypad">
-        <div class="key" onclick="press(1)">1</div>
-        <div class="key" onclick="press(2)">2</div>
-        <div class="key" onclick="press(3)">3</div>
-        <div class="key" onclick="press(4)">4</div>
-        <div class="key" onclick="press(5)">5</div>
-        <div class="key" onclick="press(6)">6</div>
-        <div class="key" onclick="press(7)">7</div>
-        <div class="key" onclick="press(8)">8</div>
-        <div class="key" onclick="press(9)">9</div>
-        <div></div>
-        <div class="key" onclick="press(0)">0</div>
-        <div class="key" onclick="clearPass()">⌫</div>
-      </div>
-    </div>
-
+  <div class="birthday-image">
+    <img src="anh234.jpg" alt="Birthday">
   </div>
+
+  <div class="lock-box">
+    <h2>🔒 Nhập mật khẩu</h2>
+    <div id="passwordDisplay">________</div>
+
+    <div class="keypad">
+      <div class="key" onclick="press(1)">1</div>
+      <div class="key" onclick="press(2)">2</div>
+      <div class="key" onclick="press(3)">3</div>
+      <div class="key" onclick="press(4)">4</div>
+      <div class="key" onclick="press(5)">5</div>
+      <div class="key" onclick="press(6)">6</div>
+      <div class="key" onclick="press(7)">7</div>
+      <div class="key" onclick="press(8)">8</div>
+      <div class="key" onclick="press(9)">9</div>
+      <div></div>
+      <div class="key" onclick="press(0)">0</div>
+      <div class="key" onclick="clearPass()">⌫</div>
+    </div>
+  </div>
+
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div id="mainContent">
   <div id="countdown">23:59:50</div>
 </div>
 
 <div class="overlay" id="overlay"></div>
 <div class="popup" id="popup">
-  <div class="close" onclick="closePopup()">❌</div>
+  <div class="close" onclick="closePopup()">✖</div>
   <div id="message"></div>
 </div>
 
 <script>
-
-/* PASSWORD */
 
 let input="";
 const correctPassword="14022005";
@@ -285,8 +289,6 @@ function unlock(){
   startCountdown();
 }
 
-/* COUNTDOWN */
-
 function startCountdown(){
   let seconds=50, minutes=59, hours=23;
   const countdown=document.getElementById("countdown");
@@ -307,8 +309,6 @@ function startCountdown(){
 
   },1000);
 }
-
-/* BIRTHDAY */
 
 let clickCount=0;
 const colors=["#ff4ecd","#00e0ff","#ffd93d","#7bff00","#ff5722","#9c27b0"];
